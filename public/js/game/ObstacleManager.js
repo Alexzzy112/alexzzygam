@@ -16,7 +16,7 @@ export class ObstacleManager {
     this.obstacles = [];
     this.coins = [];
     this.lastSpawnZ = 60;
-    this.spawnInterval = 20 - stageConfig.obstacleFrequency * 10;
+    this.spawnInterval = 35 - stageConfig.obstacleFrequency * 10;
     this.trackLength = stageConfig.trackLength;
     this.coinValue = 10;
     this.onCoinCollected = null;
@@ -127,8 +127,8 @@ export class ObstacleManager {
     if (playerZ + 80 > this.lastSpawnZ && this.lastSpawnZ < this.trackLength - 50) {
       this.lastSpawnZ += this.spawnInterval;
       const roll = Math.random();
-      if (roll < 0.65) this.spawnObstacle(this.lastSpawnZ);
-      else if (roll < 0.85) this.spawnMovingTraffic(this.lastSpawnZ + Math.random() * 15);
+      if (roll < 0.35) this.spawnObstacle(this.lastSpawnZ);
+      else if (roll < 0.50) this.spawnMovingTraffic(this.lastSpawnZ + Math.random() * 15);
       // Coins every 12 units
       if (Math.random() < 0.6) this.spawnCoin(this.lastSpawnZ - this.spawnInterval * 0.5);
     }

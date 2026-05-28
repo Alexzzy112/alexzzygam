@@ -163,7 +163,7 @@ export class PlayerCar {
     this.speed += (targetSpeed - this.speed) * this.acceleration * delta;
 
     // Smooth analog steering
-    const steerInput = (inputState?.left ? -1 : 0) + (inputState?.right ? 1 : 0);
+    const steerInput = (inputState?.left ? 1 : 0) + (inputState?.right ? -1 : 0);
     const steerPower = this.handling * STEER_SPEED;
     this.xVelocity += steerInput * steerPower * delta;
     this.xVelocity *= (1 - STEER_FRICTION * delta);
