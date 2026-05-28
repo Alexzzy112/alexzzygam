@@ -1,0 +1,10 @@
+{
+  "appId": "com.turboracer.game",
+  "appName": "Turbo Racer 3D",
+  "webDir": "public",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "http://localhost:3000",
+    "cleartext": true
+  }
+}
