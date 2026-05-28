@@ -46,6 +46,7 @@ html, body {
   background: var(--dark-bg);
   opacity: 0;
   transition: opacity 0.35s ease;
+  overflow-y: auto;
 }
 .screen.active { display: flex; opacity: 1; }
 
@@ -723,6 +724,22 @@ html, body {
   .touch-center { gap: 0.25rem !important; }
   .touch-btn { width: 44px; height: 44px; font-size: 0.9rem; }
   #btn-nitro { font-size: 0.75rem; }
+
+  /* loading screen mobile */
+  #screen-loading { padding: 1rem; justify-content: flex-start; padding-top: 2rem; }
+  .loading-logo { font-size: clamp(1.8rem, 7vw, 2.5rem); margin-bottom: 0.2em; }
+  .loading-subtitle { font-size: clamp(0.6rem, 1.8vw, 0.75rem); margin-bottom: 1.5rem; }
+  .loading-spinner { width: 28px; height: 28px; border-width: 2px; }
+  .loading-tip { font-size: 0.7rem; }
+
+  /* results screen mobile */
+  #screen-results { padding: 0.5rem; }
+  #results-content { width: min(360px, 95vw); padding: 1rem; }
+  .results-pos { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .results-stage { font-size: 0.7rem; }
+  .results-time { font-size: 1.1rem; }
+  .results-coins { font-size: 1.2rem; }
+  .results-row { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
 }
 @media (min-width: 768px) {
   #touch-controls { display: none !important; }
