@@ -563,9 +563,9 @@ html, body {
 #hud-nitro-bar { height: 100%; width: 100%; background: linear-gradient(90deg, var(--neon-blue), #0088ff); border-radius: 99px; transition: width 0.1s; }
 
 #hud-speedometer {
-  position: relative;
+  position: absolute; bottom: 4.5rem; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center;
-  margin-bottom: -0.5rem;
+  z-index: 6;
 }
 #speed-canvas { display: block; }
 #hud-speed-text {
@@ -699,10 +699,9 @@ html, body {
   .hud-label { font-size: 0.45rem; }
 
   #hud-speedometer {
-    position: absolute; top: 2rem; left: 0.5rem;
+    position: absolute; top: 2rem; left: 0.5rem; bottom: auto;
     transform: scale(0.65);
     transform-origin: top left;
-    margin-bottom: 0;
     z-index: 8;
   }
   #hud-speed-text { font-size: 0.8rem; bottom: 14px; }

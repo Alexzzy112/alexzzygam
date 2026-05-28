@@ -21,15 +21,15 @@ export class HUD {
           <span id="hud-coins-display">🪙 0</span>
         </div>
       </div>
+      <div id="hud-speedometer">
+        <canvas id="speed-canvas" width="130" height="130"></canvas>
+        <div id="hud-speed-text">0</div>
+        <div id="hud-speed-unit">KM/H</div>
+      </div>
       <div id="hud-bottom">
         <div id="hud-health-wrap">
           <div class="hud-label">SHIELD</div>
           <div id="hud-health-bar-bg"><div id="hud-health-bar"></div></div>
-        </div>
-        <div id="hud-speedometer">
-          <canvas id="speed-canvas" width="130" height="130"></canvas>
-          <div id="hud-speed-text">0</div>
-          <div id="hud-speed-unit">KM/H</div>
         </div>
         <div id="hud-nitro-wrap">
           <div class="hud-label">NITRO</div>
