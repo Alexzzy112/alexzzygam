@@ -1,4 +1,4 @@
-const CACHE = 'turbo-racer-v1';
+const CACHE = 'turbo-racer-v2';
 const ASSETS = [
   '/',
   '/index.html',
@@ -19,7 +19,8 @@ const ASSETS = [
   '/js/game/GameState.js',
   '/js/ui/HUD.js',
   '/js/ui/Menus.js',
-  '/manifest.json'
+  '/manifest.json',
+  'https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js'
 ];
 
 self.addEventListener('install', event => {
@@ -38,6 +39,15 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request))
+    caches.match(event.request).then(cached => {
+      const fetchAndCache = fetch(event.request).then(res => {
+        if (res && res.ok && res.type === 'basic' || res.type === 'cors') {
+          const clone = res.clone();
+          caches.open(CACHE).then(cache => cache.put(event.request, clone));
+        }
+        return res;
+      });
+      return cached || fetchAndCache;
+    })
   );
 });
