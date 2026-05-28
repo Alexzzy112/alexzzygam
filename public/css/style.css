@@ -690,15 +690,40 @@ html, body {
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width: 480px) {
-  #hud-bottom { padding-bottom: 4rem; }
-  #hud-health-bar-bg, #hud-nitro-bar-bg { width: 65px; height: 5px; }
-  #hud-health-wrap, #hud-nitro-wrap { min-width: 50px; }
-  #speed-canvas { width: 90px; height: 90px; }
-  #hud-speed-text { font-size: 0.95rem; bottom: 18px; }
-  #hud-speed-unit { font-size: 0.45rem; bottom: 10px; }
-  .touch-btn { width: 48px; height: 48px; font-size: 1rem; }
-  #btn-nitro { font-size: 0.85rem; }
-  #touch-controls { padding: 0.35rem 0.5rem 0.5rem; }
+  #hud-bottom {
+    padding-bottom: 3.5rem;
+    background: linear-gradient(0deg, rgba(0,0,0,0.2) 0%, transparent 100%);
+  }
+  #hud-health-bar-bg, #hud-nitro-bar-bg { width: 55px; height: 4px; }
+  #hud-health-wrap, #hud-nitro-wrap { min-width: 45px; }
+  .hud-label { font-size: 0.45rem; }
+
+  #hud-speedometer {
+    position: absolute; top: 2rem; left: 0.5rem;
+    transform: scale(0.65);
+    transform-origin: top left;
+    margin-bottom: 0;
+    z-index: 8;
+  }
+  #hud-speed-text { font-size: 0.8rem; bottom: 14px; }
+  #hud-speed-unit { font-size: 0.35rem; bottom: 8px; }
+
+  #hud-minimap-wrap { top: 2rem; right: 0.5rem; transform: scale(0.7); transform-origin: top right; }
+
+  .home-buttons { width: min(280px, 92vw); }
+  .btn-primary { padding: 1.1rem 1.5rem; font-size: clamp(1rem, 3.5vw, 1.2rem); }
+  .btn-secondary { padding: 0.7rem 1rem; font-size: clamp(0.7rem, 2.5vw, 0.85rem); }
+  .btn-back { width: 30px; height: 30px; font-size: 0.8rem; }
+
+  #touch-controls {
+    padding: 0.25rem 0.15rem 0.4rem;
+    justify-content: center;
+    gap: 0.15rem;
+  }
+  .touch-left, .touch-right { display: flex; gap: 0.15rem; }
+  .touch-center { gap: 0.25rem !important; }
+  .touch-btn { width: 44px; height: 44px; font-size: 0.9rem; }
+  #btn-nitro { font-size: 0.75rem; }
 }
 @media (min-width: 768px) {
   #touch-controls { display: none !important; }
