@@ -20,6 +20,6 @@ export const FINISH_LINE_COINS = [500, 300, 150, 50];
 export const API_BASE = '/api';
 
 // Smooth steering
-export const STEER_SPEED = 100;
+export const STEER_SPEED = 220;
 export const STEER_FRICTION = 0.7;
 export const ROAD_HALF_WIDTH = 7;

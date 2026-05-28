@@ -545,19 +545,19 @@ html, body {
   position: absolute; bottom: 0; left: 0; right: 0;
   display: flex; justify-content: space-between; align-items: flex-end;
   padding: 0.75rem 1rem 4.5rem;
-  background: linear-gradient(0deg, rgba(0,0,0,0.65) 0%, transparent 100%);
+  background: linear-gradient(0deg, rgba(0,0,0,0.35) 0%, transparent 100%);
   gap: 0.75rem;
 }
 #hud-health-wrap, #hud-nitro-wrap {
-  display: flex; flex-direction: column; gap: 0.3rem;
-  min-width: 90px;
+  display: flex; flex-direction: column; gap: 0.15rem;
+  min-width: 70px;
 }
 .hud-label { font-family: var(--font-game); font-size: 0.6rem; letter-spacing: 0.2em; color: var(--text-secondary); }
 #hud-health-bar-bg, #hud-nitro-bar-bg {
-  width: 90px; height: 8px;
-  background: rgba(255,255,255,0.1);
+  width: 90px; height: 6px;
+  background: rgba(255,255,255,0.08);
   border-radius: 99px; overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
 }
 #hud-health-bar { height: 100%; width: 100%; background: linear-gradient(90deg, #00ff88, #00cc44); border-radius: 99px; transition: width 0.2s, background 0.3s; }
 #hud-nitro-bar { height: 100%; width: 100%; background: linear-gradient(90deg, var(--neon-blue), #0088ff); border-radius: 99px; transition: width 0.1s; }
@@ -628,28 +628,28 @@ html, body {
   display: none;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 0.75rem 1rem 1rem;
+  padding: 0.5rem 0.75rem 0.75rem;
   pointer-events: auto;
   z-index: 6;
 }
 .touch-left, .touch-right { display: flex; gap: 0.5rem; }
 .touch-btn {
-  width: 64px; height: 64px;
-  background: rgba(255,255,255,0.1);
-  border: 2px solid rgba(255,255,255,0.2);
+  width: 56px; height: 56px;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.15);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem; color: #fff;
+  font-size: 1.2rem; color: #fff;
   cursor: pointer;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(4px);
   transition: background 0.1s;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 .touch-btn:active { background: rgba(255,255,255,0.25); transform: scale(0.92); }
-#btn-nitro { background: rgba(0,212,255,0.2); border-color: var(--neon-blue); color: var(--neon-blue); font-size: 1.2rem; }
-#btn-nitro:active { background: rgba(0,212,255,0.4); }
-#btn-brake { background: rgba(255,34,68,0.2); border-color: var(--neon-red); color: var(--neon-red); }
+#btn-nitro { background: rgba(0,212,255,0.12); border-color: rgba(0,212,255,0.3); color: var(--neon-blue); font-size: 1rem; }
+#btn-nitro:active { background: rgba(0,212,255,0.3); }
+#btn-brake { background: rgba(255,34,68,0.12); border-color: rgba(255,34,68,0.3); color: var(--neon-red); }
 
 /* ═══════════════ PAUSE BTN ═══════════════ */
 #btn-pause {
@@ -690,10 +690,15 @@ html, body {
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width: 480px) {
-  #hud-bottom { padding-bottom: 5.5rem; }
-  #speed-canvas { width: 110px; height: 110px; }
-  #hud-speed-text { font-size: 1.2rem; }
-  .touch-btn { width: 56px; height: 56px; font-size: 1.2rem; }
+  #hud-bottom { padding-bottom: 4rem; }
+  #hud-health-bar-bg, #hud-nitro-bar-bg { width: 65px; height: 5px; }
+  #hud-health-wrap, #hud-nitro-wrap { min-width: 50px; }
+  #speed-canvas { width: 90px; height: 90px; }
+  #hud-speed-text { font-size: 0.95rem; bottom: 18px; }
+  #hud-speed-unit { font-size: 0.45rem; bottom: 10px; }
+  .touch-btn { width: 48px; height: 48px; font-size: 1rem; }
+  #btn-nitro { font-size: 0.85rem; }
+  #touch-controls { padding: 0.35rem 0.5rem 0.5rem; }
 }
 @media (min-width: 768px) {
   #touch-controls { display: none !important; }

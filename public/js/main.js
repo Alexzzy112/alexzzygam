@@ -102,10 +102,10 @@ class TurboRacer {
       const dx = t.clientX - this.touchStartX;
       const dy = t.clientY - this.touchStartY;
       if (Math.abs(dx) > Math.abs(dy)) {
-        if (dx > 30) { this.inputState.right = true; setTimeout(() => this.inputState.right = false, 100); }
-        else if (dx < -30) { this.inputState.left = true; setTimeout(() => this.inputState.left = false, 100); }
+        if (dx > 20) { this.inputState.right = true; this.inputState._swipeTimer = setTimeout(() => this.inputState.right = false, 300); }
+        else if (dx < -20) { this.inputState.left = true; this.inputState._swipeTimer = setTimeout(() => this.inputState.left = false, 300); }
       } else {
-        if (dy < -30) { this.playerCar?.activateNitro(); setTimeout(() => this.playerCar?.deactivateNitro(), 1500); }
+        if (dy < -20) { this.playerCar?.activateNitro(); setTimeout(() => this.playerCar?.deactivateNitro(), 1500); }
       }
     }, { passive: true });
 
