@@ -43,6 +43,7 @@
 <div class="screen active" id="screen-loading">
   <div class="loading-logo">TURBO<br>RACER</div>
   <div class="loading-subtitle">3D RACING EXPERIENCE</div>
+  <div style="font-family:'Orbitron',monospace;font-size:clamp(0.6rem,1.5vw,0.8rem);color:rgba(255,255,255,0.25);letter-spacing:0.25em;margin-bottom:1.5rem;">ALEXZZY GAME</div>
   <div class="loading-spinner"></div>
   <div class="loading-bar-wrap"><div id="loading-progress"></div></div>
   <div class="loading-tip">Loading world assets...</div>
@@ -223,6 +224,27 @@
     </div>
   </div>
 </div>
+
+<!-- ═══════════ LOADING FAILSAFE ═══════════ -->
+<script>
+window._gameLoadReady = false;
+window.addEventListener('error', function(e) { document.getElementById('screen-loading').innerHTML = '<div style="text-align:center;padding:2rem;"><div style="font-size:2.5rem;margin-bottom:1rem;">💥</div><div style="font-family:Orbitron,monospace;font-size:clamp(0.9rem,2.5vw,1.1rem);color:#ff4444;margin-bottom:0.5rem;">Script Error</div><div style="color:rgba(255,255,255,0.4);font-size:clamp(0.7rem,2vw,0.8rem);margin-bottom:1.5rem;">' + (e.message||'Unknown error') + '</div><button onclick="location.reload()" style="padding:0.65rem 1.8rem;background:linear-gradient(135deg,#00d4ff,#0066cc);border:none;border-radius:10px;color:#fff;font-family:Orbitron,monospace;font-size:0.8rem;cursor:pointer;">⟳ RETRY</button></div>'; }, true);
+window._clearLoadTimer = ()=>{ clearTimeout(window._loadFailTimer); window._loadFailTimer = null; };
+window._loadFailTimer = setTimeout(()=>{
+  const el = document.getElementById('screen-loading');
+  if (!el || !el.classList.contains('active')) return;
+  el.innerHTML = `
+    <div style="text-align:center;padding:2rem;">
+      <div style="font-size:3rem;margin-bottom:1rem;">⚠️</div>
+      <div style="font-family:'Orbitron',monospace;font-size:clamp(1rem,3vw,1.3rem);color:#fff;margin-bottom:0.5rem;">Connection Lost</div>
+      <div style="color:rgba(255,255,255,0.45);font-size:clamp(0.72rem,2vw,0.85rem);margin-bottom:2rem;line-height:1.5;">
+        Could not load game assets.<br>Check your network and try again.
+      </div>
+      <button onclick="location.reload()" style="padding:0.75rem 2rem;background:linear-gradient(135deg,#00d4ff,#0066cc);border:none;border-radius:10px;color:#fff;font-family:'Orbitron',monospace;font-size:0.85rem;cursor:pointer;transition:transform 0.15s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">⟳ RETRY</button>
+    </div>
+  `;
+}, 8000);
+</script>
 
 <!-- ═══════════ IMPORT MAP ═══════════ -->
 <script type="importmap">

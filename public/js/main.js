@@ -15,6 +15,9 @@ import { CARS, AI_CARS } from './config/cars.js';
 import { AI_COUNT, FINISH_LINE_COINS, MAX_HEALTH } from './config/constants.js';
 import * as THREE from 'three';
 
+window._gameLoadReady = true;
+if (window._clearLoadTimer) window._clearLoadTimer();
+
 class TurboRacer {
   constructor() {
     this.canvas = document.getElementById('game-canvas');
