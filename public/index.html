@@ -4,8 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="description" content="Turbo Racer 3D – A modern browser-based 3D car racing game with multiple stages, AI opponents, and stunning environments." />
-  <meta name="theme-color" content="#050510" />
+  <meta name="theme-color" content="#00d4ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Turbo Racer 3D | Ultimate Racing Experience</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/icons/icon-512.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="/css/style.css" />
@@ -226,6 +230,54 @@
   "imports": {
     "three": "https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js"
   }
+}
+</script>
+
+<!-- ═══════════ INSTALL APP PROMPT ═══════════ -->
+<div id="install-prompt" style="display:none;position:fixed;bottom:1rem;left:1rem;right:1rem;z-index:999;background:rgba(5,5,20,0.95);backdrop-filter:blur(16px);border:1px solid rgba(0,212,255,0.3);border-radius:16px;padding:1rem 1.25rem;align-items:center;justify-content:space-between;gap:1rem;box-shadow:0 8px 40px rgba(0,0,0,0.6);">
+  <div style="display:flex;align-items:center;gap:0.75rem;flex:1;">
+    <div style="width:44px;height:44px;background:linear-gradient(135deg,#00d4ff,#00ff88);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">🏁</div>
+    <div>
+      <div style="font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;color:#fff;">Install Turbo Racer</div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Add to home screen for the full experience</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:0.5rem;flex-shrink:0;">
+    <button id="btn-install" style="padding:0.5rem 1.2rem;background:linear-gradient(135deg,#00d4ff,#0066cc);border:none;border-radius:10px;color:#fff;font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;cursor:pointer;letter-spacing:0.08em;">INSTALL</button>
+    <button id="btn-install-close" style="padding:0.5rem 0.7rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-size:0.85rem;cursor:pointer;">✕</button>
+  </div>
+</div>
+
+<script>
+// PWA install prompt
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const el = document.getElementById('install-prompt');
+  if (el) el.style.display = 'flex';
+});
+
+document.getElementById('btn-install')?.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const result = await deferredPrompt.userChoice;
+    if (result.outcome === 'accepted') {
+      document.getElementById('install-prompt').style.display = 'none';
+    }
+    deferredPrompt = null;
+  }
+});
+
+document.getElementById('btn-install-close')?.addEventListener('click', () => {
+  document.getElementById('install-prompt').style.display = 'none';
+});
+
+// Service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
 }
 </script>
 

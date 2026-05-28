@@ -1,0 +1,25 @@
+{
+  "name": "Turbo Racer 3D",
+  "short_name": "Turbo Racer",
+  "description": "Ultimate 3D Car Racing Game",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#050510",
+  "theme_color": "#00d4ff",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "racing"],
+  "lang": "en-US"
+}
