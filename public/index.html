@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#00d4ff" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="version" content="1" />
   <title>Turbo Racer 3D | Ultimate Racing Experience</title>
   <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
   <link rel="manifest" href="/manifest.json" />
@@ -297,10 +298,20 @@ document.getElementById('btn-install-close')?.addEventListener('click', () => {
   document.getElementById('install-prompt').style.display = 'none';
 });
 
-// Service worker
+// Service worker – force update on reload
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
+  navigator.serviceWorker.register('/sw.js?v=' + document.querySelector('meta[name=version]')?.content || Date.now()).then(reg => {
+    reg.addEventListener('updatefound', () => {
+      const newSW = reg.installing;
+      newSW.addEventListener('statechange', () => {
+        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+          newSW.postMessage('skip');
+        }
+      });
+    });
+  });
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
   });
 }
 </script>

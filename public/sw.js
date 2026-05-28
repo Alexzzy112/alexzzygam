@@ -19,13 +19,24 @@ const ASSETS = [
   '/js/game/GameState.js',
   '/js/ui/HUD.js',
   '/js/ui/Menus.js',
-  '/manifest.json',
+  '/manifest.json'
+];
+const CDN_URLS = [
   'https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.module.js'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE).then(async cache => {
+      await cache.addAll(ASSETS);
+      // cache CDN assets separately so a failure doesn't block install
+      for (const url of CDN_URLS) {
+        try {
+          const res = await fetch(url);
+          if (res.ok) cache.put(url, res);
+        } catch (_) {}
+      }
+    })
   );
   self.skipWaiting();
 });
@@ -37,11 +48,17 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
+self.addEventListener('message', event => {
+  if (event.data === 'skip') {
+    self.skipWaiting();
+  }
+});
+
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(cached => {
       const fetchAndCache = fetch(event.request).then(res => {
-        if (res && res.ok && res.type === 'basic' || res.type === 'cors') {
+        if (res && res.ok && (res.type === 'basic' || res.type === 'cors')) {
           const clone = res.clone();
           caches.open(CACHE).then(cache => cache.put(event.request, clone));
         }
