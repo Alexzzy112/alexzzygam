@@ -690,49 +690,35 @@ html, body {
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 99px; }
 
 /* ═══════════════ RESPONSIVE ═══════════════ */
-@media (max-width: 480px) {
-  #hud-bottom {
-    padding-bottom: 3.5rem;
-    background: linear-gradient(0deg, rgba(0,0,0,0.2) 0%, transparent 100%);
-  }
+@media (max-width: 767px) {
+  .btn-primary { padding: 1.2rem 1.8rem; font-size: clamp(1.1rem, 4vw, 1.4rem); }
+  .btn-secondary { padding: 0.85rem 1.2rem; font-size: clamp(0.8rem, 2.8vw, 1rem); }
+  .btn-back { width: 36px; height: 36px; font-size: 1rem; }
+  .home-buttons { width: min(300px, 92vw); }
+
+  #hud-bottom { padding-bottom: 3.5rem; background: linear-gradient(0deg, rgba(0,0,0,0.2) 0%, transparent 100%); }
   #hud-health-bar-bg, #hud-nitro-bar-bg { width: 55px; height: 4px; }
   #hud-health-wrap, #hud-nitro-wrap { min-width: 45px; }
   .hud-label { font-size: 0.45rem; }
 
-  #hud-speedometer {
-    position: absolute; top: 2rem; left: 0.5rem; bottom: auto;
-    transform: scale(0.65);
-    transform-origin: top left;
-    z-index: 8;
-  }
+  #hud-speedometer { position: absolute; top: 2rem; left: 0.5rem; bottom: auto; transform: scale(0.65); transform-origin: top left; z-index: 8; }
   #hud-speed-text { font-size: 0.8rem; bottom: 14px; }
   #hud-speed-unit { font-size: 0.35rem; bottom: 8px; }
 
   #hud-minimap-wrap { top: 2rem; right: 0.5rem; transform: scale(0.7); transform-origin: top right; }
 
-  .home-buttons { width: min(280px, 92vw); }
-  .btn-primary { padding: 1.1rem 1.5rem; font-size: clamp(1rem, 3.5vw, 1.2rem); }
-  .btn-secondary { padding: 0.7rem 1rem; font-size: clamp(0.7rem, 2.5vw, 0.85rem); }
-  .btn-back { width: 30px; height: 30px; font-size: 0.8rem; }
-
-  #touch-controls {
-    padding: 0.25rem 0.15rem 0.4rem;
-    justify-content: center;
-    gap: 0.15rem;
-  }
+  #touch-controls { padding: 0.25rem 0.15rem 0.4rem; justify-content: center; gap: 0.15rem; }
   .touch-left, .touch-right { display: flex; gap: 0.15rem; }
   .touch-center { gap: 0.25rem !important; }
   .touch-btn { width: 44px; height: 44px; font-size: 0.9rem; }
   #btn-nitro { font-size: 0.75rem; }
 
-  /* loading screen mobile */
   #screen-loading { padding: 1rem; justify-content: flex-start; padding-top: 2rem; }
   .loading-logo { font-size: clamp(1.8rem, 7vw, 2.5rem); margin-bottom: 0.2em; }
   .loading-subtitle { font-size: clamp(0.6rem, 1.8vw, 0.75rem); margin-bottom: 1.5rem; }
   .loading-spinner { width: 28px; height: 28px; border-width: 2px; }
   .loading-tip { font-size: 0.7rem; }
 
-  /* results screen mobile */
   #screen-results { padding: 0.5rem; }
   #results-content { width: min(360px, 95vw); padding: 1rem; }
   .results-pos { font-size: clamp(1.5rem, 6vw, 2rem); }

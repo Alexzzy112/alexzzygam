@@ -56,15 +56,12 @@ self.addEventListener('message', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      const fetchAndCache = fetch(event.request).then(res => {
-        if (res && res.ok && (res.type === 'basic' || res.type === 'cors')) {
-          const clone = res.clone();
-          caches.open(CACHE).then(cache => cache.put(event.request, clone));
-        }
-        return res;
-      });
-      return cached || fetchAndCache;
-    })
+    fetch(event.request).then(res => {
+      if (res && res.ok && (res.type === 'basic' || res.type === 'cors')) {
+        const clone = res.clone();
+        caches.open(CACHE).then(cache => cache.put(event.request, clone));
+      }
+      return res;
+    }).catch(() => caches.match(event.request))
   );
 });
