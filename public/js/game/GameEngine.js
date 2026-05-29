@@ -20,7 +20,7 @@ export class GameEngine {
     this.scene.fog = new THREE.Fog(0x87ceeb, FOG_NEAR, FOG_FAR);
 
     // Camera
-    this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(window.innerWidth < 768 ? 78 : 70, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.camera.position.set(0, 5, -12);
 
     // Renderer

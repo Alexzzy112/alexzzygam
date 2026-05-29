@@ -3,9 +3,12 @@ import * as THREE from 'three';
 export class CameraSystem {
   constructor(camera) {
     this.camera = camera;
-    this.offset = new THREE.Vector3(0, 5, -12);
+    this.isMobile = window.innerWidth < 768;
+    const yOff = this.isMobile ? 3.5 : 5;
+    const zOff = this.isMobile ? -8 : -12;
+    this.offset = new THREE.Vector3(0, yOff, zOff);
     this.lookAhead = new THREE.Vector3(0, 1.5, 15);
-    this.smoothSpeed = 8;
+    this.smoothSpeed = this.isMobile ? 10 : 8;
     this.shake = 0;
     this.shakeDecay = 4;
     this.cinematicMode = false;
@@ -18,8 +21,10 @@ export class CameraSystem {
     if (!targetGroup) return;
     const carPos = targetGroup.position;
     const speedNorm = Math.min(speed / 100, 1);
-    const dynamicZ = -12 - speedNorm * 4;
-    const dynamicY = 5 + speedNorm * 1.5;
+    const baseZ = this.isMobile ? -8 : -12;
+    const baseY = this.isMobile ? 3.5 : 5;
+    const dynamicZ = baseZ - speedNorm * 4;
+    const dynamicY = baseY + speedNorm * 1.5;
     const desiredPos = new THREE.Vector3(
       carPos.x + this.offset.x,
       carPos.y + dynamicY,
@@ -33,7 +38,8 @@ export class CameraSystem {
     }
 
     this.camera.position.lerp(desiredPos, this.smoothSpeed * delta);
-    const lookTarget = new THREE.Vector3(carPos.x * 0.3, carPos.y + 1.5, carPos.z + 20);
+    const lookDist = this.isMobile ? 14 : 20;
+    const lookTarget = new THREE.Vector3(carPos.x * 0.3, carPos.y + 1.5, carPos.z + lookDist);
     this.camera.lookAt(lookTarget);
   }
 
