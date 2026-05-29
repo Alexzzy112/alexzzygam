@@ -1,13 +1,5 @@
 import * as THREE from 'three';
-import { LANE_POSITIONS, OBSTACLE_DAMAGE } from '../config/constants.js';
-
-const OBSTACLE_TYPES = [
-  { type: 'cone', color: 0xff6600, w: 0.6, h: 0.9, d: 0.6, damage: 5, points: 0 },
-  { type: 'roadblock', color: 0xcc2200, w: 3.5, h: 0.9, d: 0.5, damage: 20, points: 0 },
-  { type: 'oil', color: 0x222222, w: 2.0, h: 0.05, d: 2.0, damage: 3, points: 0, isFlat: true },
-  { type: 'rock', color: 0x887766, w: 1.2, h: 0.9, d: 1.2, damage: 15, points: 0 },
-  { type: 'tire', color: 0x111111, w: 0.8, h: 0.8, d: 0.8, damage: 8, points: 0 }
-];
+import { LANE_POSITIONS } from '../config/constants.js';
 
 export class ObstacleManager {
   constructor(scene, stageConfig) {
@@ -21,54 +13,6 @@ export class ObstacleManager {
     this.coinValue = 10;
     this.onCoinCollected = null;
     this.onObstacleHit = null;
-  }
-
-  spawnObstacle(z) {
-    const lane = Math.floor(Math.random() * 3);
-    const x = LANE_POSITIONS[lane];
-    const typeIndex = Math.floor(Math.random() * OBSTACLE_TYPES.length);
-    const def = OBSTACLE_TYPES[typeIndex];
-
-    let mesh;
-    if (def.type === 'cone') {
-      const geo = new THREE.ConeGeometry(0.35, 0.9, 8);
-      mesh = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: def.color }));
-      mesh.position.set(x, 0.45, z);
-    } else if (def.type === 'roadblock') {
-      mesh = new THREE.Group();
-      const barGeo = new THREE.BoxGeometry(def.w, 0.25, 0.2);
-      const bar = new THREE.Mesh(barGeo, new THREE.MeshPhongMaterial({ color: def.color }));
-      bar.position.y = 0.9;
-      mesh.add(bar);
-      [-def.w / 2 + 0.2, def.w / 2 - 0.2].forEach(px => {
-        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.9, 0.2), new THREE.MeshPhongMaterial({ color: 0x888888 }));
-        leg.position.set(px, 0.45, 0);
-        mesh.add(leg);
-      });
-      mesh.position.set(x, 0, z);
-    } else if (def.type === 'oil') {
-      const geo = new THREE.PlaneGeometry(def.w, def.d);
-      mesh = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: def.color, transparent: true, opacity: 0.75, shininess: 200 }));
-      mesh.rotation.x = -Math.PI / 2;
-      mesh.position.set(x, 0.02, z);
-    } else if (def.type === 'rock') {
-      const geo = new THREE.DodecahedronGeometry(0.6, 0);
-      mesh = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: def.color }));
-      mesh.position.set(x, 0.6, z);
-      mesh.rotation.y = Math.random() * Math.PI;
-    } else if (def.type === 'tire') {
-      const geo = new THREE.TorusGeometry(0.4, 0.18, 8, 16);
-      mesh = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: def.color }));
-      mesh.position.set(x, 0.4, z);
-      mesh.rotation.x = Math.PI / 2;
-    }
-
-    if (mesh) {
-      mesh.castShadow = true;
-      mesh.userData = { type: def.type, damage: def.damage, lane, active: true };
-      this.scene.add(mesh);
-      this.obstacles.push(mesh);
-    }
   }
 
   spawnCoin(z) {
@@ -123,13 +67,10 @@ export class ObstacleManager {
   }
 
   update(delta, playerZ) {
-    // Spawn new obstacles
+    // Spawn moving traffic + coins only
     if (playerZ + 80 > this.lastSpawnZ && this.lastSpawnZ < this.trackLength - 50) {
       this.lastSpawnZ += this.spawnInterval;
-      const roll = Math.random();
-      if (roll < 0.35) this.spawnObstacle(this.lastSpawnZ);
-      else if (roll < 0.50) this.spawnMovingTraffic(this.lastSpawnZ + Math.random() * 15);
-      // Coins every 12 units
+      if (Math.random() < 0.7) this.spawnMovingTraffic(this.lastSpawnZ + Math.random() * 15);
       if (Math.random() < 0.6) this.spawnCoin(this.lastSpawnZ - this.spawnInterval * 0.5);
     }
 
@@ -150,19 +91,10 @@ export class ObstacleManager {
     // Move traffic
     this.obstacles.forEach(obs => {
       if (!obs.userData.active) return;
-      if (obs.userData.type === 'truck') {
-        obs.position.z += obs.userData.dir * obs.userData.speed * delta;
-        // Remove if far
-        if (obs.position.z < playerZ - 40 || obs.position.z > playerZ + 150) {
-          this.scene.remove(obs);
-          obs.userData.active = false;
-        }
-      } else {
-        // Remove static obstacles far behind
-        if (obs.position.z < playerZ - 30) {
-          this.scene.remove(obs);
-          obs.userData.active = false;
-        }
+      obs.position.z += obs.userData.dir * obs.userData.speed * delta;
+      if (obs.position.z < playerZ - 40 || obs.position.z > playerZ + 150) {
+        this.scene.remove(obs);
+        obs.userData.active = false;
       }
     });
 
