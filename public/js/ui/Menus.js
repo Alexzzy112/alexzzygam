@@ -34,6 +34,12 @@ export class Menus {
       this.screens[screenName].classList.add('active');
       this.currentScreen = screenName;
     }
+    // Toggle ad
+    const adEl = document.getElementById('ad-container');
+    if (adEl) {
+      const showAd = ['home', 'stageSelect', 'carSelect', 'garage', 'leaderboard', 'results'].includes(screenName);
+      adEl.style.display = showAd && window.innerWidth >= 360 ? 'block' : 'none';
+    }
   }
 
   bindHomeEvents() {
