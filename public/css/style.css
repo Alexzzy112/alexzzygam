@@ -725,6 +725,22 @@ html, body {
   .results-time { font-size: 1.1rem; }
   .results-coins { font-size: 1.2rem; }
   .results-row { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
+
+  /* ── Car Select (mobile) ── */
+  #cars-grid { grid-template-columns: 1fr; gap: 0.6rem; padding: 0.75rem; }
+  .car-card { padding: 0.6rem; }
+  .car-preview { height: 50px; margin-bottom: 0.4rem; }
+  .car-shape { width: 90px; height: 36px; border-radius: 10px 10px 5px 5px; }
+  .car-shape::before { top: -16px; left: 14px; right: 14px; height: 18px; }
+  .car-name { font-weight: 900; font-size: 0.95rem; }
+  .car-desc { font-weight: 700; font-size: 0.7rem; margin-bottom: 0.4rem; }
+  .car-owned, .car-price { font-weight: 700; }
+  .car-stats { gap: 0.15rem; margin-bottom: 0.3rem; }
+  .stat-row span { font-size: 0.55rem; width: 44px; }
+  .stat-bar { height: 3px; }
+  .car-select-actions { padding: 0.6rem 0.75rem; gap: 0.4rem; }
+  .car-select-actions .btn-secondary { padding: 0.5rem 0.6rem; font-size: 0.65rem; width: auto; flex: 0; }
+  #btn-start-race { padding: 1rem; font-size: 1rem; }
 }
 @media (min-width: 768px) {
   #touch-controls { display: none !important; }
