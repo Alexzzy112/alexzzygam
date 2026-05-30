@@ -28,6 +28,16 @@ export class Menus {
     this.bindAuthEvents();
   }
 
+  playSound(name) {
+    const a = window.audioManager;
+    if (!a) return;
+    if (name === 'click') a.playMenuClick();
+    else if (name === 'hover') a.playMenuHover();
+    else if (name === 'back') a.playMenuBack();
+    else if (name === 'confirm') a.playMenuConfirm();
+    else if (name === 'coin') a.playCoinDrop();
+  }
+
   show(screenName) {
     Object.values(this.screens).forEach(s => { if (s) s.classList.remove('active'); });
     if (this.screens[screenName]) {
@@ -50,22 +60,46 @@ export class Menus {
     const logoutBtn = document.getElementById('btn-logout');
     const muteBtn = document.getElementById('btn-mute');
 
-    playBtn?.addEventListener('click', () => this.show('stageSelect'));
-    garageBtn?.addEventListener('click', () => { this.buildGarageUI(); this.show('garage'); });
-    lbBtn?.addEventListener('click', () => { this.loadLeaderboard(); this.show('leaderboard'); });
-    loginBtn?.addEventListener('click', () => this.show('auth'));
-    logoutBtn?.addEventListener('click', () => { this.gameState.logout(); this.refreshHomeUI(); });
+    playBtn?.addEventListener('click', () => { this.playSound('click'); this.show('stageSelect'); });
+    garageBtn?.addEventListener('click', () => { this.playSound('click'); this.buildGarageUI(); this.show('garage'); });
+    lbBtn?.addEventListener('click', () => { this.playSound('click'); this.loadLeaderboard(); this.show('leaderboard'); });
+    loginBtn?.addEventListener('click', () => { this.playSound('click'); this.show('auth'); });
+    logoutBtn?.addEventListener('click', () => { this.playSound('back'); this.gameState.logout(); this.refreshHomeUI(); });
     muteBtn?.addEventListener('click', () => {
+      this.playSound('click');
       window.audioManager?.setMuted(!window.audioManager?.muted);
       if (muteBtn) muteBtn.textContent = window.audioManager?.muted ? '🔇' : '🔊';
     });
 
-    document.getElementById('btn-back-stages')?.addEventListener('click', () => this.show('home'));
-    document.getElementById('btn-back-cars')?.addEventListener('click', () => this.show('stageSelect'));
-    document.getElementById('btn-back-garage')?.addEventListener('click', () => this.show('home'));
-    document.getElementById('btn-back-lb')?.addEventListener('click', () => this.show('home'));
-    document.getElementById('btn-resume')?.addEventListener('click', () => window.dispatchEvent(new CustomEvent('game:resume')));
-    document.getElementById('btn-quit-race')?.addEventListener('click', () => { window.dispatchEvent(new CustomEvent('game:quit')); this.show('home'); });
+    document.getElementById('btn-back-stages')?.addEventListener('click', () => { this.playSound('back'); this.show('home'); });
+    document.getElementById('btn-back-cars')?.addEventListener('click', () => { this.playSound('back'); this.show('stageSelect'); });
+    document.getElementById('btn-back-garage')?.addEventListener('click', () => { this.playSound('back'); this.show('home'); });
+    document.getElementById('btn-back-lb')?.addEventListener('click', () => { this.playSound('back'); this.show('home'); });
+    document.getElementById('btn-resume')?.addEventListener('click', () => { this.playSound('click'); window.dispatchEvent(new CustomEvent('game:resume')); });
+    document.getElementById('btn-quit-race')?.addEventListener('click', () => { this.playSound('back'); window.dispatchEvent(new CustomEvent('game:quit')); this.show('home'); });
+
+    // Leaderboard tabs
+    document.querySelectorAll('.lb-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        this.playSound('click');
+        document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const stage = tab.dataset.stage;
+        this.loadLeaderboard(stage);
+      });
+    });
+
+    // Leaderboard refresh
+    document.getElementById('btn-lb-refresh')?.addEventListener('click', () => {
+      this.playSound('click');
+      const activeTab = document.querySelector('.lb-tab.active');
+      this.loadLeaderboard(activeTab?.dataset?.stage || 'global');
+    });
+
+    // Add hover sound to buttons
+    document.querySelectorAll('.btn-primary, .btn-secondary, .btn-icon, .btn-back, .lb-tab').forEach(btn => {
+      btn.addEventListener('mouseenter', () => this.playSound('hover'));
+    });
   }
 
   bindAuthEvents() {
@@ -76,9 +110,9 @@ export class Menus {
     const guestBtn = document.getElementById('btn-guest');
     const backAuth = document.getElementById('btn-back-auth');
 
-    loginTab?.addEventListener('click', () => { loginTab.classList.add('active'); regTab?.classList.remove('active'); loginForm.style.display = 'flex'; regForm.style.display = 'none'; });
-    regTab?.addEventListener('click', () => { regTab.classList.add('active'); loginTab?.classList.remove('active'); regForm.style.display = 'flex'; loginForm.style.display = 'none'; });
-    backAuth?.addEventListener('click', () => this.show('home'));
+    loginTab?.addEventListener('click', () => { this.playSound('click'); loginTab.classList.add('active'); regTab?.classList.remove('active'); loginForm.style.display = 'flex'; regForm.style.display = 'none'; });
+    regTab?.addEventListener('click', () => { this.playSound('click'); regTab.classList.add('active'); loginTab?.classList.remove('active'); regForm.style.display = 'flex'; loginForm.style.display = 'none'; });
+    backAuth?.addEventListener('click', () => { this.playSound('back'); this.show('home'); });
 
     loginForm?.addEventListener('submit', async e => {
       e.preventDefault();
@@ -117,7 +151,7 @@ export class Menus {
   }
 
   async doRegister(username, email, password) {
-    const msgEl = document.getElementById('auth-msg');
+    const msgEl = document.getElementById('auth-msg-reg');
     try {
       const res = await fetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, email, password }) });
       const data = await res.json();
@@ -173,6 +207,7 @@ export class Menus {
       `;
       if (unlocked) {
         card.addEventListener('click', () => {
+          this.playSound('click');
           this.gameState.stage = stage;
           this.buildCarSelectUI(stage);
           this.show('carSelect');
@@ -181,10 +216,12 @@ export class Menus {
         card.addEventListener('click', () => {
           const coins = this.gameState.player?.coins || 0;
           if (coins >= stage.unlockCost) {
+            this.playSound('coin');
             this.gameState.player.coins -= stage.unlockCost;
             this.gameState.unlockStage(stage.id);
             this.buildStageSelectUI();
           } else {
+            this.playSound('back');
             this.showNotification(`Need ${stage.unlockCost} 🪙 to unlock!`);
           }
         });
@@ -218,13 +255,15 @@ export class Menus {
         if (!owned) {
           const coins = this.gameState.player?.coins || 0;
           if (coins >= car.price) {
+            this.playSound('coin');
             this.gameState.player.coins -= car.price;
             this.gameState.player.unlockedCars.push(car.id);
             this.gameState.player.selectedCar = car.id;
             this.gameState.save();
             this.buildCarSelectUI(stage);
-          } else { this.showNotification(`Need ${car.price} 🪙!`); }
+          } else { this.playSound('back'); this.showNotification(`Need ${car.price} 🪙!`); }
         } else {
+          this.playSound('click');
           this.gameState.player.selectedCar = car.id;
           this.gameState.save();
           this.buildCarSelectUI(stage);
@@ -267,30 +306,47 @@ export class Menus {
         const stat = btn.dataset.stat;
         const cost = parseInt(btn.dataset.cost);
         if (this.gameState.player.coins >= cost && this.gameState.player.garageUpgrades[stat] < 10) {
+          this.playSound('coin');
           this.gameState.player.coins -= cost;
           this.gameState.player.garageUpgrades[stat]++;
           this.gameState.save();
           this.buildGarageUI();
           await this.gameState.syncWithServer('player/upgrade', 'PUT', { stat, cost });
-        } else { this.showNotification('Not enough coins!'); }
+        } else { this.playSound('back'); this.showNotification('Not enough coins!'); }
       });
     });
   }
 
-  async loadLeaderboard() {
+  async loadLeaderboard(stage = 'global') {
     const container = document.getElementById('leaderboard-list');
     if (!container) return;
-    container.innerHTML = '<div class="lb-loading">Loading...</div>';
+    container.innerHTML = '<div class="lb-loading"><div class="loading-spinner" style="margin:1rem auto;"></div>Loading...</div>';
     try {
-      const res = await fetch('/api/leaderboard/global');
+      const url = stage === 'global' ? '/api/leaderboard/global' : `/api/leaderboard/stage/${stage}`;
+      const res = await fetch(url);
       const data = await res.json();
-      container.innerHTML = data.map((p, i) => `
-        <div class="lb-row ${i < 3 ? 'top-' + (i + 1) : ''}">
-          <span class="lb-rank">${['🥇', '🥈', '🥉'][i] || `#${i + 1}`}</span>
-          <span class="lb-name">${p.username}</span>
-          <span class="lb-wins">${p.wins} wins</span>
-          <span class="lb-coins">🪙 ${p.coins}</span>
-        </div>`).join('') || '<div class="lb-empty">No races yet. Be the first!</div>';
+      let html = '';
+      if (!data || data.length === 0) {
+        html = '<div class="lb-empty">No races yet. Be the first!</div>';
+      } else {
+        html = data.map((p, i) => {
+          const isPlayer = this.gameState?.player && p.username === this.gameState.player.username;
+          return `<div class="lb-row ${i < 3 ? 'top-' + (i + 1) : ''} ${isPlayer ? 'lb-player-row' : ''}">
+            <span class="lb-rank">${['🥇', '🥈', '🥉'][i] || `#${i + 1}`}</span>
+            <span class="lb-name">${p.username}${isPlayer ? ' ⭐' : ''}</span>
+            <span class="lb-wins">${p.wins || (p.time ? this.formatTime(p.time) : '0')} ${p.wins !== undefined ? 'wins' : ''}</span>
+            <span class="lb-coins">${p.coins !== undefined ? '🪙 ' + p.coins : ''}</span>
+          </div>`;
+        }).join('');
+      }
+      // Show player's best time if stage-specific and player is logged in
+      if (stage !== 'global' && this.gameState?.player?.bestTimes?.[stage]) {
+        const best = this.gameState.player.bestTimes[stage];
+        const m = Math.floor(best / 60).toString().padStart(2, '0');
+        const s = Math.floor(best % 60).toString().padStart(2, '0');
+        html += `<div class="lb-personal-best">🏁 Your Best: ${m}:${s}</div>`;
+      }
+      container.innerHTML = html;
     } catch { container.innerHTML = '<div class="lb-error">Failed to load leaderboard</div>'; }
   }
 
@@ -334,6 +390,12 @@ export class Menus {
     document.getElementById('btn-retry-stage')?.addEventListener('click', this._retryStageFn);
     document.getElementById('btn-results-home')?.addEventListener('click', this._resultsHomeFn);
     this.show('results');
+  }
+
+  formatTime(seconds) {
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
   }
 
   showNotification(msg) {

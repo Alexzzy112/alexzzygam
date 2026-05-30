@@ -127,6 +127,20 @@ export class AudioManager {
     this.bgmOsc.start();
   }
 
+  playMenuClick() { this.playTone(660, 'sine', 0.06, 0.08); }
+
+  playMenuHover() { this.playTone(880, 'sine', 0.03, 0.04); }
+
+  playMenuBack() { this.playTone(440, 'sine', 0.05, 0.1); setTimeout(() => this.playTone(330, 'sine', 0.04, 0.08), 80); }
+
+  playMenuConfirm() {
+    this.playTone(523, 'sine', 0.08, 0.1);
+    setTimeout(() => this.playTone(659, 'sine', 0.07, 0.1), 80);
+    setTimeout(() => this.playTone(784, 'sine', 0.06, 0.12), 160);
+  }
+
+  playCoinDrop() { this.playTone(1200, 'sine', 0.04, 0.06); setTimeout(() => this.playTone(1500, 'sine', 0.03, 0.05), 50); }
+
   setMuted(val) {
     this.muted = val;
     if (this.ctx) {

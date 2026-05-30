@@ -153,7 +153,7 @@
       <input type="text" id="reg-user" placeholder="Username (min 3 chars)" required minlength="3" autocomplete="username" />
       <input type="email" id="reg-email" placeholder="Email address" required autocomplete="email" />
       <input type="password" id="reg-pass" placeholder="Password (min 6 chars)" required minlength="6" autocomplete="new-password" />
-      <div id="auth-msg-reg"></div>
+      <div id="auth-msg-reg" style="font-size:0.82rem;color:var(--neon-red);text-align:center;min-height:1.2em;"></div>
       <button type="submit" class="btn-primary">CREATE ACCOUNT</button>
     </form>
 
@@ -201,6 +201,18 @@
   <div class="screen-header">
     <button class="btn-back" id="btn-back-lb">←</button>
     <h2>🏆 LEADERBOARD</h2>
+    <button class="btn-icon" id="btn-lb-refresh" title="Refresh" style="margin-left:auto;width:36px;height:36px;font-size:0.9rem;">⟳</button>
+  </div>
+  <div class="lb-tabs">
+    <button class="lb-tab active" data-stage="global">🌍 Global</button>
+    <button class="lb-tab" data-stage="1">Stage 1</button>
+    <button class="lb-tab" data-stage="2">Stage 2</button>
+    <button class="lb-tab" data-stage="3">Stage 3</button>
+    <button class="lb-tab" data-stage="4">Stage 4</button>
+    <button class="lb-tab" data-stage="5">Stage 5</button>
+    <button class="lb-tab" data-stage="6">Stage 6</button>
+    <button class="lb-tab" data-stage="7">Stage 7</button>
+    <button class="lb-tab" data-stage="8">Stage 8</button>
   </div>
   <div id="leaderboard-list"></div>
 </div>
